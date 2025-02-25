@@ -2,7 +2,7 @@
   "name": "discord-news-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.18.0"
+    "axios": "^1.7.9",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",

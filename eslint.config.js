@@ -5,6 +5,12 @@ module.exports = [
 	{
 		languageOptions: {
 			ecmaVersion: 'latest',
+			sourceType: 'module',
+			global: {
+				process: 'readonly',
+				console: 'readonly',
+				require: 'readonly',
+			}
 		},
 		rules: {
 			'arrow-spacing': ['warn', { before: true, after: true }],
