@@ -5,7 +5,6 @@ const GNEWS_API_URL = 'https://gnews.io/api/v4/search';
 const API_KEY = process.env.GNEWS_API_KEY;
 
 async function fetchNews(query) {
-
     try {
         const response = await axios.get(GNEWS_API_URL, {
             params: { q: query, apikey: API_KEY, language: 'pt-br' },
