@@ -1,32 +1,37 @@
-const { SlashCommandBuilder } = require('discord.js');
-const axios = require('axios'); // Confirme que o axios está instalado
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { fetchNews } = require('../../services/newService.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('news')
-        .setDescription('Obtém notícias sobre um tema específico')
-        .addStringOption(option => 
+        .setDescription('Busca notícias sobre um tema específico.')
+        .addStringOption(option =>
             option.setName('tema')
-                .setDescription('Tema da notícia')
+                .setDescription('Informe o tema da notícia')
                 .setRequired(true)
         ),
+
     async execute(interaction) {
+        await interaction.deferReply(); // Adicionamos isso para evitar timeout no Discord
+
         const tema = interaction.options.getString('tema');
+        const result = await fetchNews(tema);
 
-        try {
-            const response = await axios.get(`https://gnews.io/api/v4/search?q=${tema}&lang=pt&token=${process.env.GNEWS_API_KEY}`);
-            const articles = response.data.articles;
-
-            if (articles.length === 0) {
-                await interaction.reply('Nenhuma notícia encontrada.');
-                return;
-            }
-
-            const newsMessage = articles.slice(0, 3).map(article => `📰 **${article.title}**\n🔗 ${article.url}`).join('\n\n');
-            await interaction.reply(newsMessage);
-        } catch (error) {
-            console.error('Erro ao buscar notícias:', error);
-            await interaction.reply('Erro ao buscar notícias.');
+        if (!result.success) {
+            await interaction.editReply(result.message);
+            return;
         }
-    },
+
+        const embeds = result.articles.map((article, index) => 
+            new EmbedBuilder()
+                .setColor('#0099ff')
+                .setTitle(article.title)
+                .setURL(article.url)
+                .setDescription(`🔹 **Fonte:** ${article.source.name}`)
+                .setImage(article.image) // Adiciona a imagem da notícia
+                .setFooter({ text: `Notícia ${index + 1} de ${result.articles.length}` })
+        );
+
+        await interaction.editReply({ content: `📰 **Aqui estão algumas notícias sobre _${tema}_:**`, embeds });
+    }
 };
