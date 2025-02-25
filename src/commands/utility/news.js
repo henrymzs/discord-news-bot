@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { fetchNews } = require('../../services/newService.js');
+const { getJaiminhoPhrase } = require('../../utils/jaiminhoPhrases.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,12 +15,13 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply(); // Adicionamos isso para evitar timeout no Discord
 
+        await interaction.editReply(getJaiminhoPhrase('processing'));
+
         const tema = interaction.options.getString('tema');
         const result = await fetchNews(tema);
 
         if (!result.success) {
-            await interaction.editReply(result.message);
-            return;
+            return interaction.editReply(getJaiminhoPhrase('noResults'));
         }
 
         let index = 0;
