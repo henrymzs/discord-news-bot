@@ -117,3 +117,44 @@ if (x === 5) {
 	console.log('Padrão normal');
 }
 ```
+
+
+# Qual a diferença?
+```module.exports = pool```
+Retorna um pool de conexões em callbacks.
+Quando você executa uma query, precisa usar callbacks para capturar resultados.
+Exemplos de uso de callbacks:
+
+```
+const pool = require('./database');
+
+pool.query('SELECT * FROM users', (err, results) => {
+    if (err) throw err;
+    console.log(results);
+});
+```
+Desvantagem:
+Callbacks tornam o código menos organizado e mais difícil de lidar, especialmente quando há múltiplas quries encadeadas.
+
+
+```module.exports = pool.promise()```
+Retorna um pool de conexões baseado em Promises
+Permite usar async/await, oque deixa o código mais organizado e moderno
+Exemplo de uso de async/await
+const pool = require('./database');
+```
+async function getUsers() {
+    try {
+        const [rows] = await pool.query('SELECT * FROM users');
+        console.log(rows);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+getUsers();
+```
+Vantagens:
+Código mais limpo e organizado usando async/await
+Melhor tratamento de erros usando try/catch
+Facilidade para encadear consultas sem 'callback hell'
