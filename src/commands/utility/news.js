@@ -14,7 +14,6 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply(); // Adicionamos isso para evitar timeout no Discord
-
         await interaction.editReply(getJaiminhoPhrase('processing'));
 
         const tema = interaction.options.getString('tema');
@@ -29,14 +28,16 @@ module.exports = {
 
         function createEmbed(index) {
             const article = newsList[index];
-
-            return new EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setColor('#0099ff')
                 .setTitle(article.title)
                 .setURL(article.url)
                 .setDescription(article.description || "Sem descrição disponível.")
-                .setImage(article.image || null)
                 .setFooter({ text: `Fonte: ${article.source.name} • ${new Date(article.publishedAt).toLocaleDateString('pt-BR')}` });
+
+            if (article.image) embed.setImage(article.image);
+            return embed;
+
         }
 
         function createButtons(index, total) {
@@ -59,10 +60,10 @@ module.exports = {
             components: [createButtons(index, newsList.length)]
         });
 
-        const collector = message.createMessageComponentCollector({ time: 60000 });
+        const collector = message.createMessageComponentCollector({ time: 120000 });
 
         collector.on('collect', async i => {
-            if (i.user.id !== interaction.user.id) return;
+            if (i.user.id !== interaction.user.id) return; 
             if (i.customId === 'next' && index < newsList.length - 1) index++;
             if (i.customId === 'prev' && index > 0) index--;
 
