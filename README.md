@@ -1,160 +1,117 @@
-# Projeto Bot discord 
+# 🤖 Jaiminho Bot - Notícias no Discord
 
-Este projeto tem como finalidade a criação de um bot no discord que será responsavel por buscar noticias relacionadas a tecnologia e mandar em servidores que ele estiver presente.
+Jaiminho é um bot do Discord que busca notícias sobre um tema específico e exibe os resultados diretamente no chat do servidor. Ele também permite navegar entre as notícias usando botões de interação.
 
-Ao longo do projeto irei colocar aqui oque aprendi e as ideias que tive durante a construção desse projeto e ao final irei organizar tudo e compilar meus conhecimentos adquiridos e ideias que tive a partir desse projeto de forma que possa ajudar outros desenvolvedores e permitir que possíveis recrutadores compreendam os conceitos que aprendi ao longo do projeto. 
+Estou sempre em busca de aprimorar minhas habilidades, então qualquer feedback sobre o projeto, código, arquitetura ou boas práticas será muito bem-vindo! Se quiser contribuir com sugestões, você pode:
 
- Optional Chaining ```(?.)``` é um operador do JavaScript introduzido no ES2020 que permite acessar propriedades de objetos aninhados sem precisar verificar manualmente se cada nível existe. Isso evita erros do tipo "Cannot read property of undefined" e torna o código mais limpo e seguro.
+- 📧 Me enviar um e-mail: henrykaua21@gmail.com
+- 🔗 Se conectar comigo no [LinkedIn](https://www.linkedin.com/in/henry-kaua/)
+- 🐛 Abrir uma [issue](https://github.com/henrymzs/api-todolist/issues) aqui no repositório
+- 👽 Notas do que aprendi durante o desenvolvimento desse projeto [Notes](./NOTES.md)
 
-# Como funciona?
-Quando você tenta acessar uma propriedade que não existe, o optional chaining ```(?.)``` retorna undefined em vez de gerar erro.
+Toda ajuda é muito apreciada e me auxilia a crescer como desenvolvedor. 🚀
 
-Exemplo sem Optional Chaining ```(?.)```
-```
-const usuario = {}; 
+## 🚀 Funcionalidades
 
-console.log(usuario.endereco.rua); // ❌ Erro: Não é possível ler propriedades de undefined
-```
-O erro acontece porque usuario.endereco não existe.
+✅ Busca notícias de tecnologia e outros temas usando a API do GNews.
 
-Exemplo com Optional Chaining ```(?.)```
-```
-const usuario = {}; 
+✅ Exibe os resultados com título, descrição, imagem e link. 
 
-console.log(usuario.endereco?.rua); // ✅ undefined (sem erro)
-```
+✅ Permite navegar entre as notícias com botões. 
 
-Aqui, o ```(?.)``` verifica se endereco existe antes de tentar acessar ```rua```.
-Se ```endereco``` for ```undefined``` ou ```null```, a expressão simplesmente retorna ```undefined``` sem quebrar o código.
+✅ Mensagens personalizadas inspiradas no Jaiminho (personagem do Chaves).
 
-# Aplicações Práticas
-Acessando propriedades de objetos aninhados
-```
-const usuario = {
-  nome: "Lucas",
-  endereco: {
-    cidade: "São Paulo"
-  }
-};
+## 🛠️ Tecnologias Utilizadas
 
-console.log(usuario.endereco?.cidade); // ✅ "São Paulo"
-console.log(usuario.endereco?.rua);    // ✅ undefined (sem erro)
-```
+- [Node.js](https://nodejs.org/)
+- [Discord.js](https://discord.js.org/)
+- [Axios](https://axios-http.com/)
+- [Dotenv](https://www.npmjs.com/package/dotenv)
 
-Chamando métodos de um objeto opcionalmente
-Se um objeto pode ou não ter um método, o optional chaining evita erros ao chamá-lo.
-```
-const usuario = {
-  nome: "Ana",
-  falar: () => "Olá!",
-};
-
-console.log(usuario.falar?.()); // ✅ "Olá!"
-console.log(usuario.comer?.()); // ✅ undefined (sem erro)
-```
-
-Se ```comer``` não existir, o ```(?.)``` impede que o código quebre.
-
-Acessando elementos de um array opcionalmente
-
-Se a variável pode ser ```null``` ou ```undefined```, podemos usar o ```?```. ao acessar elementos do array.
-``````
-const lista = null;
-
-console.log(lista?.[0]); // ✅ undefined (sem erro)
-``````
-
-Usando Optional Chaining com Nullish Coalescing (```??```)
-
-Podemos combinar com o operador ```??``` para definir valores padrão quando o resultado for ```undefined``` ou ```null```:
-```
-const usuario = {};
-
-console.log(usuario.endereco?.rua ?? "Endereço não informado"); // ✅ "Endereço não informado"
-```
-
-# Aspas Simples ou Aspas Dupla?
-Depende do projeto, não há certo ou errado, o importante é ser consistente dentro do projeto. Porém dados alguns exemplos pode se dizer que aspas simples se torna mais recomendado, por exemplo:
-
-Melhor compatilidade com linguagem SQL
-
-Linguagem SQL costuma usar aspas simples como padrão. Então se você escreve muitas Queries SQL no código, fica mais natural:
-```
-const query = 'SELECT * FROM usuarios';
-```
+## 📂 Estrutura do Projeto
 
 ```
-const query = "SELECT * FROM usuarios";
+📦 discord-news-bot
+├── 📂 src
+│   ├── 📂 commands
+│   │   ├── 📂 utility
+│   │   │   └── news.js  
+│   ├── 📂 events
+│   │   ├── interactionCreate.js 
+│   ├── 📂 services
+│   │   ├── newService.js  
+│   ├── 📂 utils
+│   │   ├── jaiminhoPhrases.js 
+│   ├── index.js 
+    ├── deploy-commands.js 
+├── .env  
+├── package.json  
+└── README.md  
+
+## 🔧 Configuração e Instalação
+
+### 1️⃣ Pré-requisitos
+
+Antes de iniciar, você precisará:
+
+- Node.js instalado (versão 16+)
+- Uma conta no Discord e um servidor para adicionar o bot
+- Uma API Key do [GNews](https://gnews.io/)
+
+### 2️⃣ Clonar o repositório
+
+```s
+git clone https://github.com/henrymzs/discord-news-bot.git
+cd seu-repositorio
 ```
 
-Mas novamente vai depender muito do projeto onde vai estar inserido, criando o padrão, vai evitar que isso aconteça:
+### 3️⃣ Instalar dependências
 
-```
-const nome = "Heny";
-const sobrenome = 'Kauã';
-```
-Com ESLint configurado para aspas simples, ele padroniza para:
-
-```
-const nome = 'Henry';
-const sobrenome = 'Kauã';
+```sh
+npm install
 ```
 
+### 4️⃣ Configurar variáveis de ambiente
 
-# O que é uma "Yoda Condition"?
-É quando a ordem dos elementos em uma comparação é invertida, ou seja, o valor literal aparece antes da variável.
-```
-// Exemplo de Yoda Condition ❌ (Evitar)
-if (5 === x) { 
-	console.log('Yoda Condition');
-}
-```
+Crie um arquivo **.env** na raiz do projeto e adicione:
 
-Em vez disso, o código deveria ser escrito de forma natural:
-```
-// Correto ✅
-if (x === 5) { 
-	console.log('Padrão normal');
-}
+```env
+DISCORD_TOKEN=seu_token_do_bot
+CLIENT_ID=seu_id_do_bot
+GUILD_ID=seu_id_do_servidor
+GNEWS_API_KEY=sua_api_key_do_gnews
 ```
 
+### 5️⃣ Registrar os comandos no Discord
 
-# Qual a diferença?
-```module.exports = pool```
-Retorna um pool de conexões em callbacks.
-Quando você executa uma query, precisa usar callbacks para capturar resultados.
-Exemplos de uso de callbacks:
-
+```sh
+node deploy-commands.js
 ```
-const pool = require('./database');
 
-pool.query('SELECT * FROM users', (err, results) => {
-    if (err) throw err;
-    console.log(results);
-});
+### 6️⃣ Iniciar o bot
+
+```sh
+node src/index.js
 ```
-Desvantagem:
-Callbacks tornam o código menos organizado e mais difícil de lidar, especialmente quando há múltiplas quries encadeadas.
 
+## 🛠 Como Usar
 
-```module.exports = pool.promise()```
-Retorna um pool de conexões baseado em Promises
-Permite usar async/await, oque deixa o código mais organizado e moderno
-Exemplo de uso de async/await
-const pool = require('./database');
+Após iniciar o bot, use o comando:
+
+```sh
+/news tecnologia
 ```
-async function getUsers() {
-    try {
-        const [rows] = await pool.query('SELECT * FROM users');
-        console.log(rows);
-    } catch (error) {
-        console.error(error);
-    }
-}
 
-getUsers();
-```
-Vantagens:
-Código mais limpo e organizado usando async/await
-Melhor tratamento de erros usando try/catch
-Facilidade para encadear consultas sem 'callback hell'
+🔹 O bot buscará as últimas notícias sobre o tema digitado. 
+
+🔹 Você poderá navegar entre as notícias usando os botões "⏪ Voltar" e "⏩ Próxima".
+
+## 🚀 Contribuição
+
+1. Faça um fork do repositório.
+2. Crie uma branch para sua funcionalidade (`git checkout -b minha-feature`).
+3. Faça as alterações e commit (`git commit -m 'Adicionei uma nova feature'`).
+4. Faça o push para a branch (`git push origin minha-feature`).
+5. Abra um Pull Request.
+
+
